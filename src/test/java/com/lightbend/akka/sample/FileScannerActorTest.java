@@ -6,6 +6,7 @@ import akka.actor.Props;
 import akka.testkit.TestActorRef;
 import akka.testkit.javadsl.TestKit;
 import java.io.File;
+import java.util.regex.Matcher;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -38,7 +39,7 @@ public class FileScannerActorTest {
     ref.tell("scan", ActorRef.noSender());
     String workDirectory = System.getProperty("user.dir");
     String partialPath = "/src/main/java/com/lightbend/akka/sample/demoFiles";
-    partialPath.replaceAll("/", File.separator);
+    partialPath = partialPath.replaceAll("/", Matcher.quoteReplacement(File.separator));
     assertTrue(actor.getFileList().size() == new File(workDirectory+partialPath).listFiles().length);
   }
 
@@ -49,7 +50,7 @@ public class FileScannerActorTest {
     final FileScannerActor actor = ref.underlyingActor();
     ref.tell("scan", ActorRef.noSender());
     String partialPath = "/src/main/java/com/lightbend/akka/sample/demoFiles/demo0";
-    partialPath.replaceAll("/", File.separator);
+    partialPath = partialPath.replaceAll("/", Matcher.quoteReplacement(File.separator));
     assertTrue(actor.getFileList().contains(System.getProperty("user.dir")+partialPath));
   }
 }

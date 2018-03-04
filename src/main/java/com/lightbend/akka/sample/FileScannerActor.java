@@ -14,6 +14,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.stream.Stream;
 
 /**
@@ -52,8 +53,8 @@ public class FileScannerActor extends AbstractActor {
         .matchEquals("scan", s -> {
           String workDirectory = System.getProperty("user.dir");
           String partialPath = "/src/main/java/com/lightbend/akka/sample/demoFiles";
+          partialPath = partialPath.replaceAll("/", Matcher.quoteReplacement(File.separator));
           listFilesForFolder(workDirectory + partialPath);
-          partialPath.replaceAll("/", File.separator);
           if (fileList.isEmpty()) {
             System.out.println("No files exists in the directory!");
           } else {
