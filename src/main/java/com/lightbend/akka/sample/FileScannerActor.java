@@ -7,6 +7,7 @@ import akka.actor.ActorLogging;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -50,7 +51,9 @@ public class FileScannerActor extends AbstractActor {
     return receiveBuilder()
         .matchEquals("scan", s -> {
           String workDirectory = System.getProperty("user.dir");
-          listFilesForFolder(workDirectory + "/src/main/java/com/lightbend/akka/sample/demoFiles");
+          String partialPath = "/src/main/java/com/lightbend/akka/sample/demoFiles";
+          listFilesForFolder(workDirectory + partialPath);
+          partialPath.replaceAll("/", File.separator);
           if (fileList.isEmpty()) {
             System.out.println("No files exists in the directory!");
           } else {

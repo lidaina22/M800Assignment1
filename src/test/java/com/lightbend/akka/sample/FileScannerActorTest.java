@@ -5,6 +5,7 @@ import akka.actor.ActorSystem;
 import akka.actor.Props;
 import akka.testkit.TestActorRef;
 import akka.testkit.javadsl.TestKit;
+import java.io.File;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -35,7 +36,10 @@ public class FileScannerActorTest {
     final TestActorRef<FileScannerActor> ref = TestActorRef.create(system, props, "test-A1");
     final FileScannerActor actor = ref.underlyingActor();
     ref.tell("scan", ActorRef.noSender());
-    assertTrue(actor.getFileList().size() == 4);
+    String workDirectory = System.getProperty("user.dir");
+    String partialPath = "/src/main/java/com/lightbend/akka/sample/demoFiles";
+    partialPath.replaceAll("/", File.separator);
+    assertTrue(actor.getFileList().size() == new File(workDirectory+partialPath).listFiles().length);
   }
 
   @Test
@@ -44,7 +48,8 @@ public class FileScannerActorTest {
     final TestActorRef<FileScannerActor> ref = TestActorRef.create(system, props, "test-A2");
     final FileScannerActor actor = ref.underlyingActor();
     ref.tell("scan", ActorRef.noSender());
-    assertTrue(actor.getFileList().contains(System.getProperty("user.dir")
-        + "/src/main/java/com/lightbend/akka/sample/demoFiles/demo0"));
+    String partialPath = "/src/main/java/com/lightbend/akka/sample/demoFiles/demo0";
+    partialPath.replaceAll("/", File.separator);
+    assertTrue(actor.getFileList().contains(System.getProperty("user.dir")+partialPath));
   }
 }
