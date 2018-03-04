@@ -1,0 +1,5 @@
+The code is similar to the actor examples we used in the previous experiments, but notice:
+
+Instead of println() we use akka.event.Logging, which directly invokes Akka’s built in logging facility.
+We use the recommended pattern for creating actors by defining a props() static method on the actor.
+To provide the main entry point that creates the actor system, add the following code to the new IotMain class.
