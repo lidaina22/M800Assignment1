@@ -9,6 +9,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import static com.lightbend.akka.sample.Constants.START_OF_FILE;
 import static org.junit.Assert.*;
 
 /**
@@ -34,7 +35,7 @@ public class AggregatorActorTest {
     final Props props = Props.create(AggregatorActor.class);
     final TestActorRef<AggregatorActor> ref = TestActorRef.create(system, props, "test-C1");
     final AggregatorActor actor = ref.underlyingActor();
-    ref.tell("startOfFile", ActorRef.noSender());
+    ref.tell(START_OF_FILE, ActorRef.noSender());
     assertTrue(actor.getCountSum() == 0);
   }
 

@@ -11,6 +11,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import static com.lightbend.akka.sample.Constants.*;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -36,9 +37,9 @@ public class FileScannerActorTest {
     final Props props = Props.create(FileScannerActor.class);
     final TestActorRef<FileScannerActor> ref = TestActorRef.create(system, props, "test-A1");
     final FileScannerActor actor = ref.underlyingActor();
-    ref.tell("scan", ActorRef.noSender());
-    String workDirectory = System.getProperty("user.dir");
-    String partialPath = "/src/main/java/com/lightbend/akka/sample/demoFiles";
+    ref.tell(SCAN_MESSAGE, ActorRef.noSender());
+    String workDirectory = System.getProperty(WORK_DIRECTORY);
+    String partialPath = PARTIAL_PATH;
     partialPath = partialPath.replaceAll("/", Matcher.quoteReplacement(File.separator));
     assertTrue(actor.getFileList().size() == new File(workDirectory+partialPath).listFiles().length);
   }
@@ -48,9 +49,9 @@ public class FileScannerActorTest {
     final Props props = Props.create(FileScannerActor.class);
     final TestActorRef<FileScannerActor> ref = TestActorRef.create(system, props, "test-A2");
     final FileScannerActor actor = ref.underlyingActor();
-    ref.tell("scan", ActorRef.noSender());
-    String partialPath = "/src/main/java/com/lightbend/akka/sample/demoFiles/demo0";
+    ref.tell(SCAN_MESSAGE, ActorRef.noSender());
+    String partialPath = PARTIAL_PATH+"/demo0";
     partialPath = partialPath.replaceAll("/", Matcher.quoteReplacement(File.separator));
-    assertTrue(actor.getFileList().contains(System.getProperty("user.dir")+partialPath));
+    assertTrue(actor.getFileList().contains(System.getProperty(WORK_DIRECTORY)+partialPath));
   }
 }

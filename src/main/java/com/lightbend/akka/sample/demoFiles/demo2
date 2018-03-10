@@ -1,3 +1,0 @@
-Each timer has a key and can be replaced or cancelled. It’s guaranteed that a message from the previous incarnation of the timer with the same key is not received, even though it might already be enqueued in the mailbox when it was cancelled or the new timer was started.
-
-The timers are bound to the lifecycle of the actor that owns it, and thus are cancelled automatically when it is restarted or stopped. Note that the TimerScheduler is not thread-safe, i.e. it must only be used within the actor that owns it.

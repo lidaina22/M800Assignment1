@@ -11,6 +11,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import static com.lightbend.akka.sample.Constants.PARTIAL_PATH;
+import static com.lightbend.akka.sample.Constants.WORK_DIRECTORY;
 import static org.junit.Assert.*;
 
 /**
@@ -32,17 +34,15 @@ public class FileParserActorTest {
   }
 
   Exception e1;
-
   @Test
   public void testParseCorrectFile() {
-    final Props props = Props.create(FileParserActor.class);
+    final Props props = Props.create(FileParserActor.class, "");
     final TestActorRef<FileParserActor> ref = TestActorRef.create(system, props, "test-B1");
-    final FileParserActor actor = ref.underlyingActor();
-    ref.tell(new ParseMessage(System.getProperty("user.dir")
-        + "/src/main/java/com/lightbend/akka/sample/demoFiles/demo0"), ActorRef.noSender());
+    ref.tell(new ParseMessage(System.getProperty(WORK_DIRECTORY)
+        + PARTIAL_PATH+"/demo0"), ActorRef.noSender());
     try {
-      ref.receive(new ParseMessage(System.getProperty("user.dir")
-          + "/src/main/java/com/lightbend/akka/sample/demoFiles/demo"));
+      ref.receive(new ParseMessage(System.getProperty(WORK_DIRECTORY)
+          + PARTIAL_PATH+"/demo0"));
     } catch (Exception e) {
       e1 = e;
     }
@@ -57,12 +57,12 @@ public class FileParserActorTest {
   @Test
   public void testNullPointException() {
 
-    final Props props = Props.create(FileParserActor.class);
+    final Props props = Props.create(FileParserActor.class, "");
     final TestActorRef<FileParserActor> ref = TestActorRef.create(system, props, "test-B2");
 
     try {
-      ref.receive(new ParseMessage(System.getProperty("user.dir")
-          + "/src/main/java/com/lightbend/akka/sample/demoFiles/demo"));
+      ref.receive(new ParseMessage(System.getProperty(WORK_DIRECTORY)
+          + PARTIAL_PATH+"/demo"));
     } catch (Exception e) {
       ex = e;
     }
